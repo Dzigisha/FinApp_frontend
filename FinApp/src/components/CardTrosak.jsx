@@ -1,34 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-function CardTrosak() {
+function CardTrosak({ data }) {
+  const [ukupnaCena, setUkupnaCena] = useState(0);
+  const { naziv, namirnice } = data;
+
+  useEffect(() => {
+    let sum = 0;
+
+    namirnice.forEach((item) => {
+      sum += item.cena;
+    });
+    setUkupnaCena(sum);
+  }, []);
+
   return (
     <>
       <div className="CartTrosak">
-        <h4>Namirnice</h4>
+        <h4>{naziv}</h4>
         <p className="cardTrosakCena">
-          <strong>400</strong> din
+          <strong>{ukupnaCena}</strong> din
         </p>
         <ul>
-          <li className="d-flex justify-content-between">
-            <li>Paprike</li>
-            <p className="px-3">100din</p>
-          </li>
-          <li className="d-flex justify-content-between">
-            <li>Luk</li>
-            <p className="px-3">100din</p>
-          </li>
-          <li className="d-flex justify-content-between">
-            <li>Jabuke</li>
-            <p className="px-3">100din</p>
-          </li>
-          <li className="d-flex justify-content-between">
-            <li>Zelje</li>
-            <p className="px-3">100din</p>
-          </li>
-          <li className="d-flex justify-content-between">
-            <li>Zelje</li>
-            <p className="px-3">100din</p>
-          </li>
+          {namirnice.map((namirnica) => {
+            return (
+              <li className="d-flex justify-content-between">
+                <li>{namirnica.naziv}</li>
+                <p className="px-3">{namirnica.cena}din</p>
+              </li>
+            );
+          })}
         </ul>
         <hr />
         <div className="d-flex justify-content-around cardFooter">

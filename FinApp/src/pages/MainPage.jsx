@@ -1,11 +1,11 @@
 import React from "react";
-import ListGroup from "../ListGroup";
-import NavBar from "../NavBar";
-import PieChart from "../PieChart";
-import CardTrosak from "../CardTrosak";
-import GroupCardTrosak from "../GroupCardTrosak";
-import FilterSection from "../FilterSection";
-import BarChart from "../BarChart";
+import ListGroup from "../components/ListGroup";
+import NavBar from "../components/NavBar";
+import PieChart from "../components/PieChart";
+import CardTrosak from "../components/CardTrosak";
+import GroupCardTrosak from "../components/GroupCardTrosak";
+import FilterSection from "../components/FilterSection";
+import BarChart from "../components/BarChart";
 
 function MainPage() {
   return (
