@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from "react";
 import CardTrosak from "./CardTrosak";
+import InputStavka from "./InputStavka";
+import BackModal from "./BackModal";
 function GroupCardTrosak() {
   const [data, setData] = useState();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isClickedInputStavka, setIsClickedInputStavka] = useState(false);
   const url =
-    "https://fa1f510d-1d40-4912-9b85-30935d182b5b.mock.pstmn.io/namirnice";
+    "https://fa1f510d-1d40-4912-9b85-30935d182b5b.mock.pstmn.io/troskovi";
+
+  const inputStavkaClick = () => {
+    setIsClickedInputStavka(true);
+    console.log(isClickedInputStavka);
+  };
+  const closeInputStavka = () => {
+    setIsClickedInputStavka(false);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,12 +51,19 @@ function GroupCardTrosak() {
   }
 
   return (
-    <div className="d-flex justify-content-around">
-      {data.map((trosak) => {
-        console.log(trosak);
-        return <CardTrosak data={trosak} />;
-      })}
-    </div>
+    <>
+      <div className="d-flex justify-content-around">
+        {data.map((trosak) => {
+          return (
+            <CardTrosak inputStavkaClick={inputStavkaClick} data={trosak} />
+          );
+        })}
+      </div>
+      {isClickedInputStavka === true && <InputStavka />}
+      {isClickedInputStavka === true && (
+        <BackModal closeInputStavka={closeInputStavka} />
+      )}
+    </>
   );
 }
 
