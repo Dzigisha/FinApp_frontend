@@ -2,10 +2,28 @@ import React, { useEffect, useState } from "react";
 
 function CardTrosak({ data, inputStavkaClick }) {
   const [ukupnaCena, setUkupnaCena] = useState(0);
-  const { naziv, stavke } = data;
-
+  let { naziv, stavke } = data;
+  const { items, setItems } = useState();
   const inputStavkaClickHandler = () => {
     inputStavkaClick();
+  };
+
+  const [checkedItems, setCheckedItems] = useState(
+    new Array(stavke.length).fill(false)
+  );
+
+  const handleCheckboxChange = (index) => {
+    const newCheckedItems = [...checkedItems];
+    newCheckedItems[index] = !newCheckedItems[index];
+    setCheckedItems(newCheckedItems);
+  };
+
+  const handleDelete = () => {
+    const updatedItems = stavke.filter((item, index) => !checkedItems[index]);
+    stavke = updatedItems;
+    setCheckedItems(new Array(stavke.length).fill(false));
+
+    console.log(checkedItems);
   };
 
   useEffect(() => {
@@ -15,6 +33,7 @@ function CardTrosak({ data, inputStavkaClick }) {
       sum += item.cena;
     });
     setUkupnaCena(sum);
+    console.log(stavke);
   }, []);
 
   return (
@@ -25,12 +44,24 @@ function CardTrosak({ data, inputStavkaClick }) {
           <strong>{ukupnaCena}</strong> din
         </p>
         <ul>
-          {stavke.map((stavka) => {
+          {stavke.map((stavka, index) => {
             return (
-              <li className="d-flex justify-content-between">
-                <li>{stavka.naziv}</li>
-                <p className="px-3">{stavka.cena}din</p>
-              </li>
+              <div key={index} className="d-flex ">
+                <div class=" mr-auto p-2">
+                  <input
+                    class="form-check-input "
+                    type="checkbox"
+                    id="inlineCheckbox1"
+                    value="option1"
+                    checked={checkedItems[index]}
+                    onChange={() => handleCheckboxChange(index)}
+                  />
+                  <label class="form-check-label" for="inlineCheckbox1"></label>
+                </div>
+
+                <p className="p-2">{stavka.naziv}</p>
+                <p className="p-2">{stavka.cena}din</p>
+              </div>
             );
           })}
         </ul>
@@ -39,7 +70,9 @@ function CardTrosak({ data, inputStavkaClick }) {
           <button className="btn btn-primary" onClick={inputStavkaClickHandler}>
             Dodaj
           </button>
-          <button className="btn border">Obrisi</button>
+          <button className="btn border" onClick={handleDelete}>
+            Obrisi
+          </button>
         </div>
       </div>
     </>

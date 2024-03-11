@@ -1,11 +1,29 @@
 import React from "react";
-import BackModal from "./BackModal";
+import { useState } from "react";
 
 function InputStavka() {
+  const [naziv, setNaziv] = useState("");
+  const [cena, setCena] = useState(0);
+  const [currentDate, setCurrentDate] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    // Reset form fields
+    const now = new Date();
+    const formattedDate = now.toJSON().substring(0, 10);
+
+    // Update the state variable with the current date
+    setCurrentDate(formattedDate);
+    console.log("Form submitted:", { naziv, cena, currentDate });
+
+    setCena(0);
+    setNaziv("");
+  };
+
   return (
     <>
       <div className="inputStavka ">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div class="form-group m-3">
             <label for="exampleInputEmail1">Naziv stavke:</label>
             <input
@@ -13,6 +31,8 @@ function InputStavka() {
               class="form-control"
               id="stavkaInput"
               placeholder="Unesite stavku"
+              value={naziv}
+              onChange={(event) => setNaziv(event.target.value)}
             />
           </div>
           <div class="form-group m-3">
@@ -22,11 +42,13 @@ function InputStavka() {
               class="form-control "
               id="inputCenaStavke"
               placeholder="Cena stavke"
+              value={cena}
+              onChange={(event) => setCena(Number(event.target.value))}
             />
           </div>
 
           <button type="submit" class="btn btn-primary m-3">
-            Submit
+            Dodaj
           </button>
         </form>
       </div>
