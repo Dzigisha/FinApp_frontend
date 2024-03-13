@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import CardTrosak from "./CardTrosak";
 import InputStavka from "./InputStavka";
 import BackModal from "./BackModal";
+import TrosakDetail from "./TrosakDetail";
 function GroupCardTrosak() {
   const [data, setData] = useState();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClickedInputStavka, setIsClickedInputStavka] = useState(false);
+  const [isClickedDetailStavka, setIsClickedDetailStavka] = useState(false);
+  const [clickedStavka, setClickedStavka] = useState(null);
   const url =
     "https://fa1f510d-1d40-4912-9b85-30935d182b5b.mock.pstmn.io/troskovi";
 
@@ -16,6 +19,15 @@ function GroupCardTrosak() {
   };
   const closeInputStavka = () => {
     setIsClickedInputStavka(false);
+    setIsClickedDetailStavka(false);
+  };
+  const detailStavkaClicked = (stavka) => {
+    setIsClickedDetailStavka(true);
+    setClickedStavka(stavka);
+    console.log(stavka, "Otvori");
+  };
+  const closeStavkaDetail = () => {
+    setIsClickedDetailStavka(false);
   };
 
   useEffect(() => {
@@ -53,15 +65,24 @@ function GroupCardTrosak() {
   return (
     <>
       <div className="d-flex justify-content-around">
-        {data.map((trosak) => {
+        {data.map((trosak, index) => {
           return (
-            <CardTrosak inputStavkaClick={inputStavkaClick} data={trosak} />
+            <CardTrosak
+              key={index}
+              indexKategorija={index}
+              inputStavkaClick={inputStavkaClick}
+              detailStavkaClicked={detailStavkaClicked}
+              data={trosak}
+            />
           );
         })}
       </div>
       {isClickedInputStavka === true && <InputStavka />}
-      {isClickedInputStavka === true && (
+      {(isClickedInputStavka === true || isClickedDetailStavka === true) && (
         <BackModal closeInputStavka={closeInputStavka} />
+      )}
+      {isClickedDetailStavka === true && (
+        <TrosakDetail stavka={clickedStavka} />
       )}
     </>
   );

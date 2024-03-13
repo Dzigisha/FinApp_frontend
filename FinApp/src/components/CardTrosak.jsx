@@ -1,64 +1,51 @@
 import React, { useEffect, useState } from "react";
+import TrosakDetail from "./TrosakDetail";
 
-function CardTrosak({ data, inputStavkaClick }) {
+function CardTrosak({
+  data,
+  indexKategorija,
+  inputStavkaClick,
+  detailStavkaClicked,
+}) {
   const [ukupnaCena, setUkupnaCena] = useState(0);
-  let { naziv, stavke } = data;
-  const { items, setItems } = useState();
+
   const inputStavkaClickHandler = () => {
     inputStavkaClick();
   };
 
-  const [checkedItems, setCheckedItems] = useState(
-    new Array(stavke.length).fill(false)
-  );
-
-  const handleCheckboxChange = (index) => {
-    const newCheckedItems = [...checkedItems];
-    newCheckedItems[index] = !newCheckedItems[index];
-    setCheckedItems(newCheckedItems);
-  };
-
-  const handleDelete = () => {
-    const updatedItems = stavke.filter((item, index) => !checkedItems[index]);
-    stavke = updatedItems;
-    setCheckedItems(new Array(stavke.length).fill(false));
-
-    console.log(checkedItems);
+  const handleDetailClick = (index) => {
+    // detailStavkaClicked();
+    console.log(index, data.stavke[index]);
+    detailStavkaClicked(data.stavke[index]);
   };
 
   useEffect(() => {
     let sum = 0;
 
-    stavke.forEach((item) => {
+    data.stavke.forEach((item) => {
       sum += item.cena;
     });
     setUkupnaCena(sum);
-    console.log(stavke);
   }, []);
 
   return (
     <>
       <div className="CartTrosak">
-        <h4>{naziv}</h4>
+        <h4>
+          {data.naziv} {indexKategorija}
+        </h4>
         <p className="cardTrosakCena">
           <strong>{ukupnaCena}</strong> din
         </p>
         <ul>
-          {stavke.map((stavka, index) => {
+          {data.stavke.map((stavka, index) => {
             return (
-              <div key={index} className="d-flex ">
-                <div class=" mr-auto p-2">
-                  <input
-                    class="form-check-input "
-                    type="checkbox"
-                    id="inlineCheckbox1"
-                    value="option1"
-                    checked={checkedItems[index]}
-                    onChange={() => handleCheckboxChange(index)}
-                  />
-                  <label class="form-check-label" for="inlineCheckbox1"></label>
-                </div>
-
+              <div
+                key={index}
+                onClick={() => handleDetailClick(index)}
+                className="d-flex justify-content-around "
+              >
+                <p>{index}</p>
                 <p className="p-2">{stavka.naziv}</p>
                 <p className="p-2">{stavka.cena}din</p>
               </div>
@@ -70,9 +57,7 @@ function CardTrosak({ data, inputStavkaClick }) {
           <button className="btn btn-primary" onClick={inputStavkaClickHandler}>
             Dodaj
           </button>
-          <button className="btn border" onClick={handleDelete}>
-            Obrisi
-          </button>
+          <button className="btn border">Obrisi</button>
         </div>
       </div>
     </>
