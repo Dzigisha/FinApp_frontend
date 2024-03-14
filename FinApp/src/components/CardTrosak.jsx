@@ -6,6 +6,7 @@ function CardTrosak({
   indexKategorija,
   inputStavkaClick,
   detailStavkaClicked,
+  refreshFlag,
 }) {
   const [ukupnaCena, setUkupnaCena] = useState(0);
 
@@ -14,9 +15,8 @@ function CardTrosak({
   };
 
   const handleDetailClick = (index) => {
-    // detailStavkaClicked();
     console.log(index, data.stavke[index]);
-    detailStavkaClicked(data.stavke[index]);
+    detailStavkaClicked(data.stavke[index], indexKategorija, index);
   };
 
   useEffect(() => {
@@ -26,7 +26,7 @@ function CardTrosak({
       sum += item.cena;
     });
     setUkupnaCena(sum);
-  }, []);
+  }, [refreshFlag]);
 
   return (
     <>

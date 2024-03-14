@@ -4,32 +4,53 @@ import InputStavka from "./InputStavka";
 import BackModal from "./BackModal";
 import TrosakDetail from "./TrosakDetail";
 function GroupCardTrosak() {
+  //Stateovi
   const [data, setData] = useState();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClickedInputStavka, setIsClickedInputStavka] = useState(false);
   const [isClickedDetailStavka, setIsClickedDetailStavka] = useState(false);
   const [clickedStavka, setClickedStavka] = useState(null);
+  const [clickedIndexKategorija, setClickedIndexKategorija] = useState(null);
+  const [clickedIndexStavka, setClickedIndexStavka] = useState(null);
+  const [refreshFlag, setRefreshFlag] = useState(false);
+  //URL API
   const url =
     "https://fa1f510d-1d40-4912-9b85-30935d182b5b.mock.pstmn.io/troskovi";
 
   const inputStavkaClick = () => {
     setIsClickedInputStavka(true);
-    console.log(isClickedInputStavka);
   };
   const closeInputStavka = () => {
     setIsClickedInputStavka(false);
     setIsClickedDetailStavka(false);
   };
-  const detailStavkaClicked = (stavka) => {
+  const detailStavkaClicked = (stavka, indexKategorija, indexStavka) => {
     setIsClickedDetailStavka(true);
     setClickedStavka(stavka);
-    console.log(stavka, "Otvori");
-  };
-  const closeStavkaDetail = () => {
-    setIsClickedDetailStavka(false);
+    setClickedIndexKategorija(indexKategorija);
+    setClickedIndexStavka(indexStavka);
+    console.log(stavka, indexKategorija, indexStavka);
   };
 
+  const editStavka = (indexKategorija, indexStavka, newData) => {
+    const updatedTroskovi = [...data];
+    updatedTroskovi[indexKategorija].stavke[indexStavka] = newData;
+    setData(updatedTroskovi);
+    setIsClickedDetailStavka(false);
+    console.log(updatedTroskovi);
+    setRefreshFlag(!refreshFlag);
+  };
+
+  const deleteStavka = (indexKategorija, indexStavka) => {
+    const updatedTroskovi = [...data];
+    updatedTroskovi[indexKategorija].stavke.splice(indexStavka, 1);
+    setData(updatedTroskovi);
+    setIsClickedDetailStavka(false);
+    console.log(updatedTroskovi);
+    setRefreshFlag(!refreshFlag);
+  };
+  //Funkcija za fetch podataka
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -73,6 +94,7 @@ function GroupCardTrosak() {
               inputStavkaClick={inputStavkaClick}
               detailStavkaClicked={detailStavkaClicked}
               data={trosak}
+              refreshFlag={refreshFlag}
             />
           );
         })}
@@ -82,7 +104,19 @@ function GroupCardTrosak() {
         <BackModal closeInputStavka={closeInputStavka} />
       )}
       {isClickedDetailStavka === true && (
-        <TrosakDetail stavka={clickedStavka} />
+        <TrosakDetail
+          indexKategorija={clickedIndexKategorija}
+          indexStavka={clickedIndexStavka}
+          onEditStavka={editStavka}
+          onDelete={() =>
+            deleteStavka(
+              clickedIndexKategorija,
+              clickedIndexStavka,
+              isClickedDetailStavka
+            )
+          }
+          stavka={clickedStavka}
+        />
       )}
     </>
   );
