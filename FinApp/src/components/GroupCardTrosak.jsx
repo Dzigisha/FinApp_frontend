@@ -33,12 +33,26 @@ function GroupCardTrosak() {
     console.log(stavka, indexKategorija, indexStavka);
   };
 
+  const getIndexKategorijaCard = (indexKategorija) => {
+    setClickedIndexKategorija(indexKategorija);
+  };
+
+  const addStavka = (indexKategorija, newStavka) => {
+    // Add the new stavka to the trosko object at the specified index
+    const updatedTroskovi = [...data];
+    updatedTroskovi[indexKategorija].stavke.push(newStavka);
+    setData(updatedTroskovi);
+    setIsClickedInputStavka(false);
+    setRefreshFlag(!refreshFlag);
+  };
+
   const editStavka = (indexKategorija, indexStavka, newData) => {
     const updatedTroskovi = [...data];
     updatedTroskovi[indexKategorija].stavke[indexStavka] = newData;
     setData(updatedTroskovi);
     setIsClickedDetailStavka(false);
     console.log(updatedTroskovi);
+
     setRefreshFlag(!refreshFlag);
   };
 
@@ -94,12 +108,18 @@ function GroupCardTrosak() {
               inputStavkaClick={inputStavkaClick}
               detailStavkaClicked={detailStavkaClicked}
               data={trosak}
+              getIndexKategorijaCard={getIndexKategorijaCard}
               refreshFlag={refreshFlag}
             />
           );
         })}
       </div>
-      {isClickedInputStavka === true && <InputStavka />}
+      {isClickedInputStavka === true && (
+        <InputStavka
+          indexKategorija={clickedIndexKategorija}
+          onInput={addStavka}
+        />
+      )}
       {(isClickedInputStavka === true || isClickedDetailStavka === true) && (
         <BackModal closeInputStavka={closeInputStavka} />
       )}

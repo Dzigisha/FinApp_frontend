@@ -7,10 +7,12 @@ function CardTrosak({
   inputStavkaClick,
   detailStavkaClicked,
   refreshFlag,
+  getIndexKategorijaCard,
 }) {
   const [ukupnaCena, setUkupnaCena] = useState(0);
 
   const inputStavkaClickHandler = () => {
+    getIndexKategorijaCard(indexKategorija);
     inputStavkaClick();
   };
 
@@ -23,9 +25,10 @@ function CardTrosak({
     let sum = 0;
 
     data.stavke.forEach((item) => {
-      sum += item.cena;
+      sum += Number(item.cena);
     });
     setUkupnaCena(sum);
+    console.log(sum);
   }, [refreshFlag]);
 
   return (

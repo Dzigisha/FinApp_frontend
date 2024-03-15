@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 
-function InputStavka() {
+function InputStavka({ onInput, indexKategorija }) {
   const [naziv, setNaziv] = useState("");
   const [cena, setCena] = useState(0);
   const [currentDate, setCurrentDate] = useState("");
@@ -14,8 +14,9 @@ function InputStavka() {
 
     // Update the state variable with the current date
     setCurrentDate(formattedDate);
+    const newStavka = { naziv, cena, currentDate };
     console.log("Form submitted:", { naziv, cena, currentDate });
-
+    onInput(indexKategorija, newStavka);
     setCena(0);
     setNaziv("");
   };
