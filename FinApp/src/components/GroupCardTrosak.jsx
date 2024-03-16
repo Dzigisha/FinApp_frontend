@@ -64,6 +64,31 @@ function GroupCardTrosak() {
     console.log(updatedTroskovi);
     setRefreshFlag(!refreshFlag);
   };
+
+  const deleteKategorija = (indexKategorija) => {
+    const updatedKategorije = [...data];
+    updatedKategorije.splice(indexKategorija, 1);
+    setData(updatedKategorije);
+    setIsClickedDetailStavka(false);
+
+    setRefreshFlag(!refreshFlag);
+  };
+
+  const addKategorija = (naziv) => {
+    const updatedKategorije = [...data];
+    let stavke = [
+      {
+        naziv: "",
+        cena: 0,
+      },
+    ];
+    const newKategorija = { naziv, stavke };
+    updatedKategorije.push(newKategorija);
+    setData(updatedKategorije);
+    setIsClickedInputStavka(false);
+    setRefreshFlag(!refreshFlag);
+  };
+
   //Funkcija za fetch podataka
   useEffect(() => {
     const fetchData = async () => {
@@ -99,6 +124,16 @@ function GroupCardTrosak() {
 
   return (
     <>
+      <div className="d-flex ">
+        <button
+          className="btn btn-primary"
+          onClick={() => addKategorija("Proba")}
+        >
+          Dodaj novu kategoriju
+        </button>
+      </div>
+
+      {/* Card deo  */}
       <div className="d-flex justify-content-around">
         {data.map((trosak, index) => {
           return (
@@ -108,6 +143,7 @@ function GroupCardTrosak() {
               inputStavkaClick={inputStavkaClick}
               detailStavkaClicked={detailStavkaClicked}
               data={trosak}
+              deleteKategorija={deleteKategorija}
               getIndexKategorijaCard={getIndexKategorijaCard}
               refreshFlag={refreshFlag}
             />

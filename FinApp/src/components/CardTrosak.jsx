@@ -8,12 +8,17 @@ function CardTrosak({
   detailStavkaClicked,
   refreshFlag,
   getIndexKategorijaCard,
+  deleteKategorija,
 }) {
   const [ukupnaCena, setUkupnaCena] = useState(0);
 
   const inputStavkaClickHandler = () => {
     getIndexKategorijaCard(indexKategorija);
     inputStavkaClick();
+  };
+
+  const deleteKategorijaHandler = () => {
+    deleteKategorija(indexKategorija);
   };
 
   const handleDetailClick = (index) => {
@@ -24,11 +29,15 @@ function CardTrosak({
   useEffect(() => {
     let sum = 0;
 
-    data.stavke.forEach((item) => {
-      sum += Number(item.cena);
-    });
+    if (Object.keys(data.stavke).length == 1) {
+      setUkupnaCena(Number(0));
+    } else
+      data.stavke.forEach((item) => {
+        sum += Number(item.cena);
+      });
+    console.log("Prvi item :" + data.stavke[0].naziv, data.stavke[0].cena);
+    console.log("Ovo je velicina niza " + Object.keys(data.stavke).length);
     setUkupnaCena(sum);
-    console.log(sum);
   }, [refreshFlag]);
 
   return (
@@ -42,6 +51,9 @@ function CardTrosak({
         </p>
         <ul>
           {data.stavke.map((stavka, index) => {
+            if (Number(stavka.cena) === 0) {
+              return <></>;
+            }
             return (
               <div
                 key={index}
@@ -60,7 +72,9 @@ function CardTrosak({
           <button className="btn btn-primary" onClick={inputStavkaClickHandler}>
             Dodaj
           </button>
-          <button className="btn border">Obrisi</button>
+          <button className="btn border" onClick={deleteKategorijaHandler}>
+            Obrisi
+          </button>
         </div>
       </div>
     </>
