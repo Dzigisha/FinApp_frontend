@@ -73,8 +73,10 @@
   width: 25%;
   height: 25%;
   border-radius: 10px;
+  min-width: 250px;
+  min-height: 350px;
   max-width: 350px;
-  max-height: 350px;
+  max-height: 450px;
 }
 .backModal {
   background-color: black;

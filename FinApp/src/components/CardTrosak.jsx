@@ -43,9 +43,7 @@ function CardTrosak({
   return (
     <>
       <div className="CartTrosak">
-        <h4>
-          {data.naziv} {indexKategorija}
-        </h4>
+        <h4>{data.naziv}</h4>
         <p className="cardTrosakCena">
           <strong>{ukupnaCena}</strong> din
         </p>
@@ -60,7 +58,6 @@ function CardTrosak({
                 onClick={() => handleDetailClick(index)}
                 className="d-flex justify-content-around "
               >
-                <p>{index}</p>
                 <p className="p-2">{stavka.naziv}</p>
                 <p className="p-2">{stavka.cena}din</p>
               </div>
