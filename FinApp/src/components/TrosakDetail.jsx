@@ -21,7 +21,6 @@ function TrosakDetail({
   const handleDeleteClick = (event) => {
     event.preventDefault();
     onDelete();
-    console.log("Kliknuo obrisao");
   };
 
   const handleSubmit = (e) => {

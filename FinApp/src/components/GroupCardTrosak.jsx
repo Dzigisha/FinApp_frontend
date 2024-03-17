@@ -3,7 +3,7 @@ import CardTrosak from "./CardTrosak";
 import InputStavka from "./InputStavka";
 import BackModal from "./BackModal";
 import TrosakDetail from "./TrosakDetail";
-function GroupCardTrosak() {
+function GroupCardTrosak({ searchText, filterValue }) {
   //Stateovi
   const [data, setData] = useState();
   const [error, setError] = useState(null);
@@ -14,10 +14,33 @@ function GroupCardTrosak() {
   const [clickedIndexKategorija, setClickedIndexKategorija] = useState(null);
   const [clickedIndexStavka, setClickedIndexStavka] = useState(null);
   const [refreshFlag, setRefreshFlag] = useState(false);
+  // const [filteredData, setFilteredData] = useState();
   //URL API
   const url =
     "https://fa1f510d-1d40-4912-9b85-30935d182b5b.mock.pstmn.io/troskovi";
 
+  //Funkcija za fetch podataka
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+        console.log(data);
+
+        // return await response.json();
+      } catch (error) {
+        setError(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
   const inputStavkaClick = () => {
     setIsClickedInputStavka(true);
   };
@@ -38,7 +61,6 @@ function GroupCardTrosak() {
   };
 
   const addStavka = (indexKategorija, newStavka) => {
-    // Add the new stavka to the trosko object at the specified index
     const updatedTroskovi = [...data];
     updatedTroskovi[indexKategorija].stavke.push(newStavka);
     setData(updatedTroskovi);
@@ -61,7 +83,7 @@ function GroupCardTrosak() {
     updatedTroskovi[indexKategorija].stavke.splice(indexStavka, 1);
     setData(updatedTroskovi);
     setIsClickedDetailStavka(false);
-    console.log(updatedTroskovi);
+    console.log(filterValue);
     setRefreshFlag(!refreshFlag);
   };
 
@@ -88,28 +110,14 @@ function GroupCardTrosak() {
     setIsClickedInputStavka(false);
     setRefreshFlag(!refreshFlag);
   };
+  let filteredData = data;
 
-  //Funkcija za fetch podataka
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const jsonData = await response.json();
-        setData(jsonData);
-        console.log(data);
-        // return await response.json();
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    // Trigger a refresh when sortOption changes
 
-    fetchData();
-  }, []);
+    setRefreshFlag(!refreshFlag);
+  }, [filterValue, searchText]);
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -121,6 +129,37 @@ function GroupCardTrosak() {
   if (!data) {
     return <p>No data available</p>;
   }
+
+  if (filterValue === "Skuplje") {
+    filteredData.sort((a, b) => {
+      const grossPriceA = a.stavke.reduce(
+        (acc, curr) => acc + Number(curr.cena),
+        0
+      );
+      const grossPriceB = b.stavke.reduce(
+        (acc, curr) => acc + Number(curr.cena),
+        0
+      );
+      return grossPriceB - grossPriceA; // Sort from highest to lowest gross price
+    });
+  }
+
+  if (filterValue === "Jeftinije") {
+    filteredData.sort((a, b) => {
+      const grossPriceA = a.stavke.reduce(
+        (acc, curr) => acc + Number(curr.cena),
+        0
+      );
+      const grossPriceB = b.stavke.reduce(
+        (acc, curr) => acc + Number(curr.cena),
+        0
+      );
+      return grossPriceA - grossPriceB;
+    });
+  }
+  filteredData = data.filter((item) =>
+    item.naziv.toLowerCase().includes(searchText.toLowerCase())
+  );
 
   return (
     <>
@@ -135,7 +174,7 @@ function GroupCardTrosak() {
 
       {/* Card deo  */}
       <div className="d-flex justify-content-around">
-        {data.map((trosak, index) => {
+        {filteredData.map((trosak, index) => {
           return (
             <CardTrosak
               key={index}

@@ -10,12 +10,14 @@ function InputStavka({ onInput, indexKategorija }) {
     event.preventDefault();
     // Reset form fields
     const now = new Date();
-    const formattedDate = now.toJSON().substring(0, 10);
+    const datum = now.toJSON().substring(0, 10);
 
     // Update the state variable with the current date
-    setCurrentDate(formattedDate);
-    const newStavka = { naziv, cena, currentDate };
-    console.log("Form submitted:", { naziv, cena, currentDate });
+    setCurrentDate(datum);
+
+    console.log("Form submitted:", { naziv, cena, datum });
+    const newStavka = { naziv, cena, datum };
+
     onInput(indexKategorija, newStavka);
     setCena(0);
     setNaziv("");

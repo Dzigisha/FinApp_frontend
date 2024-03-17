@@ -35,8 +35,7 @@ function CardTrosak({
       data.stavke.forEach((item) => {
         sum += Number(item.cena);
       });
-    console.log("Prvi item :" + data.stavke[0].naziv, data.stavke[0].cena);
-    console.log("Ovo je velicina niza " + Object.keys(data.stavke).length);
+
     setUkupnaCena(sum);
   }, [refreshFlag]);
 

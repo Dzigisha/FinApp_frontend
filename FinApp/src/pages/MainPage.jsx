@@ -1,4 +1,4 @@
-import React from "react";
+import { React, useState } from "react";
 import ListGroup from "../components/ListGroup";
 import NavBar from "../components/NavBar";
 import PieChart from "../components/PieChart";
@@ -8,6 +8,9 @@ import FilterSection from "../components/FilterSection";
 import BarChart from "../components/BarChart";
 
 function MainPage() {
+  const [searchText, setSearchText] = useState("");
+  const [filterValue, setFilterValue] = useState();
+
   return (
     <>
       <NavBar />
@@ -18,12 +21,15 @@ function MainPage() {
           <BarChart />
         </div>
         <div className="d-flex justify-content-end">
-          <FilterSection />
+          <FilterSection
+            setSearchText={setSearchText}
+            setFilterValue={setFilterValue}
+          />
         </div>
 
         <hr></hr>
 
-        <GroupCardTrosak />
+        <GroupCardTrosak searchText={searchText} filterValue={filterValue} />
       </div>
     </>
   );
