@@ -98,13 +98,16 @@ function GroupCardTrosak({ searchText, filterValue }) {
 
   const addKategorija = (naziv) => {
     const updatedKategorije = [...data];
+    const now = new Date();
+    const datum_kreiranja = now.toJSON().substring(0, 10);
     let stavke = [
       {
         naziv: "",
         cena: 0,
       },
     ];
-    const newKategorija = { naziv, stavke };
+
+    const newKategorija = { naziv, stavke, datum_kreiranja };
     updatedKategorije.push(newKategorija);
     setData(updatedKategorije);
     setIsClickedInputStavka(false);
@@ -155,6 +158,17 @@ function GroupCardTrosak({ searchText, filterValue }) {
         0
       );
       return grossPriceA - grossPriceB;
+    });
+  }
+
+  if (filterValue === "Kasnije") {
+    filteredData.sort((a, b) => {
+      return new Date(a.datum_kreiranja) - new Date(b.datum_kreiranja); // Sort by earliest date
+    });
+  }
+  if (filterValue === "Skorije") {
+    filteredData.sort((a, b) => {
+      return new Date(b.datum_kreiranja) - new Date(a.datum_kreiranja); // Sort by earliest date
     });
   }
   filteredData = data.filter((item) =>
