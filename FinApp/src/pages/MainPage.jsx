@@ -18,10 +18,8 @@ function MainPage() {
 
       <div className="container-fluid">
         <div className="d-flex justify-content-center">
-          {/* {dataKategorije.map((kat) => {
-            return <p>{kat.naziv}</p>;
-          })} */}
-          <PieChart dataKategorije={dataKategorije} />
+          {dataKategorije && <PieChart dataKategorije={dataKategorije} />}
+
           <BarChart />
         </div>
         <div className="d-flex justify-content-end">
