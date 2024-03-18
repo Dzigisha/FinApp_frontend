@@ -1,6 +1,6 @@
 // ./components/PieChart.js
 
-import React from "react"; // Import the necessary library such as React for now.
+import { React, useEffect, useState } from "react"; // Import the necessary library such as React for now.
 
 import Chart from "chart.js/auto"; // Import the Chart.js library.
 
@@ -18,16 +18,17 @@ const getRandomColor = () => {
  * that returns a Pie component from react-chartjs-2,
  */
 const PieChart = ({ dataKategorije }) => {
-  if (!dataKategorije) {
-    return <div>Loading...</div>; // Optional: Render a loading indicator while data is being fetched
-  }
+  // const [data, setData] = useState(null);
 
   const data = {
     labels: dataKategorije.map((kategorija) => kategorija.naziv), // Array of category names
     datasets: [
       {
         data: dataKategorije.map((kategorija) =>
-          kategorija.stavke.reduce((total, stavka) => total + stavka.cena, 0)
+          kategorija.stavke.reduce(
+            (total, stavka) => total + Number(stavka.cena),
+            0
+          )
         ), // Array of total prices for each category
         backgroundColor: dataKategorije.map(() => getRandomColor()), // Generate random colors for each category
       },
