@@ -6,6 +6,7 @@ import CardTrosak from "../components/CardTrosak";
 import GroupCardTrosak from "../components/GroupCardTrosak";
 import FilterSection from "../components/FilterSection";
 import BarChart from "../components/BarChart";
+import InfoCards from "../components/InfoCards";
 
 function MainPage() {
   const [searchText, setSearchText] = useState("");
@@ -17,9 +18,19 @@ function MainPage() {
       <NavBar />
 
       <div className="container-fluid">
-        <div className="d-flex justify-content-center">
-          {dataKategorije && <PieChart dataKategorije={dataKategorije} />}
-          {dataKategorije && <BarChart dataKategorije={dataKategorije} />}
+        <div className="d-flex ">
+          {dataKategorije && (
+            <InfoCards
+              className="  "
+              dataKategorije={dataKategorije}
+            ></InfoCards>
+          )}
+          {dataKategorije && (
+            <PieChart className="ms-auto" dataKategorije={dataKategorije} />
+          )}
+          {dataKategorije && (
+            <BarChart className="" dataKategorije={dataKategorije} />
+          )}
         </div>
         <div className="d-flex justify-content-end">
           <FilterSection
