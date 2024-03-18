@@ -19,8 +19,7 @@ function MainPage() {
       <div className="container-fluid">
         <div className="d-flex justify-content-center">
           {dataKategorije && <PieChart dataKategorije={dataKategorije} />}
-
-          <BarChart />
+          {dataKategorije && <BarChart dataKategorije={dataKategorije} />}
         </div>
         <div className="d-flex justify-content-end">
           <FilterSection

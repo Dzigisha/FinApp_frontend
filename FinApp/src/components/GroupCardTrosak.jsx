@@ -108,6 +108,7 @@ function GroupCardTrosak({ searchText, filterValue, setDataKategorije }) {
       {
         naziv: "",
         cena: 0,
+        datum: datum_kreiranja,
       },
     ];
 
