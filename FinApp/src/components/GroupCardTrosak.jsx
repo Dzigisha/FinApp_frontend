@@ -3,7 +3,7 @@ import CardTrosak from "./CardTrosak";
 import InputStavka from "./InputStavka";
 import BackModal from "./BackModal";
 import TrosakDetail from "./TrosakDetail";
-function GroupCardTrosak({ searchText, filterValue }) {
+function GroupCardTrosak({ searchText, filterValue, setDataKategorije }) {
   //Stateovi
   const [data, setData] = useState();
   const [error, setError] = useState(null);
@@ -29,7 +29,9 @@ function GroupCardTrosak({ searchText, filterValue }) {
         }
         const jsonData = await response.json();
         setData(jsonData);
-        console.log(data);
+        setDataKategorije(jsonData);
+
+        console.log(jsonData);
 
         // return await response.json();
       } catch (error) {
@@ -41,6 +43,11 @@ function GroupCardTrosak({ searchText, filterValue }) {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    setDataKategorije(data);
+  }, [data]);
+
   const inputStavkaClick = () => {
     setIsClickedInputStavka(true);
   };
@@ -53,7 +60,6 @@ function GroupCardTrosak({ searchText, filterValue }) {
     setClickedStavka(stavka);
     setClickedIndexKategorija(indexKategorija);
     setClickedIndexStavka(indexStavka);
-    console.log(stavka, indexKategorija, indexStavka);
   };
 
   const getIndexKategorijaCard = (indexKategorija) => {
@@ -73,7 +79,6 @@ function GroupCardTrosak({ searchText, filterValue }) {
     updatedTroskovi[indexKategorija].stavke[indexStavka] = newData;
     setData(updatedTroskovi);
     setIsClickedDetailStavka(false);
-    console.log(updatedTroskovi);
 
     setRefreshFlag(!refreshFlag);
   };
@@ -83,7 +88,6 @@ function GroupCardTrosak({ searchText, filterValue }) {
     updatedTroskovi[indexKategorija].stavke.splice(indexStavka, 1);
     setData(updatedTroskovi);
     setIsClickedDetailStavka(false);
-    console.log(filterValue);
     setRefreshFlag(!refreshFlag);
   };
 

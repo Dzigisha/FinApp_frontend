@@ -10,6 +10,7 @@ import BarChart from "../components/BarChart";
 function MainPage() {
   const [searchText, setSearchText] = useState("");
   const [filterValue, setFilterValue] = useState();
+  const [dataKategorije, setDataKategorije] = useState();
 
   return (
     <>
@@ -17,7 +18,7 @@ function MainPage() {
 
       <div className="container-fluid">
         <div className="d-flex justify-content-center">
-          <PieChart />
+          <PieChart dataKategorije={dataKategorije} />
           <BarChart />
         </div>
         <div className="d-flex justify-content-end">
@@ -29,7 +30,11 @@ function MainPage() {
 
         <hr></hr>
 
-        <GroupCardTrosak searchText={searchText} filterValue={filterValue} />
+        <GroupCardTrosak
+          searchText={searchText}
+          filterValue={filterValue}
+          setDataKategorije={setDataKategorije}
+        />
       </div>
     </>
   );
